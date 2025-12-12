@@ -1,7 +1,7 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
-import type { PrismaClient } from "./generated/prisma/client.js";
-import withPrisma from './lib/prisma.js';
+import type { PrismaClient } from "./generated/prisma/client.ts";
+import withPrisma from './lib/prisma.ts';
 
 
 type ContextWithPrisma = {

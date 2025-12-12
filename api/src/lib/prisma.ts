@@ -1,5 +1,5 @@
 import type { Context, Next } from 'hono';
-import { PrismaClient } from '../generated/prisma/client.js';
+import { PrismaClient } from '../generated/prisma/client.ts';
 import { PrismaPg } from '@prisma/adapter-pg';
 import "dotenv/config";
 

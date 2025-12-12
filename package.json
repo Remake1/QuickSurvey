@@ -1,0 +1,30 @@
+{
+  "name": "quicksurvey",
+  "version": "0.3.0",
+  "description": "A monorepo built with Hono, Vite, and React",
+  "license": "MIT",
+  "packageManager": "pnpm@10.20.0",
+  "workspaces": [
+    "./api",
+    "./client",
+    "./shared"
+  ],
+  "scripts": {
+    "dev": "turbo dev",
+    "dev:api": "turbo dev --filter=api",
+    "dev:client": "turbo dev --filter=client",
+    "build": "turbo build",
+    "build:api": "turbo build --filter=api",
+    "build:client": "turbo build --filter=client",
+    "lint": "turbo lint",
+    "type-check": "turbo type-check",
+    "test": "turbo test",
+    "db:generate": "pnpm --filter api db:generate",
+    "db:migrate": "pnpm --filter api db:migrate",
+    "db:push": "pnpm --filter api db:push",
+    "db:studio": "pnpm --filter api db:studio"
+  },
+  "devDependencies": {
+    "turbo": "^2.6.3"
+  }
+}

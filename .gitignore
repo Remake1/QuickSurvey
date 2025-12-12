@@ -1,1 +1,26 @@
+# IDE
 /.idea
+.vscode
+
+# Dependencies
+node_modules
+
+# Turborepo
+.turbo
+
+# Build outputs
+dist
+.next
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
