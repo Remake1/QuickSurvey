@@ -1,4 +1,4 @@
 // Shared types and utilities
 // Export your shared types here
 
-export { };
+export * from './schemas/auth.schema.ts';

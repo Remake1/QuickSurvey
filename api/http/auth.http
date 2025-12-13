@@ -1,0 +1,27 @@
+### Register a new user
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123",
+  "name": "Test User"
+}
+
+### Login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Get current user (requires auth cookie from login)
+GET http://localhost:3000/auth/me
+
+### Logout
+POST http://localhost:3000/auth/logout
+
+### Health check
+GET http://localhost:3000/
