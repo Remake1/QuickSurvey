@@ -2,120 +2,126 @@
 trigger: always_on
 ---
 
-You are a senior TypeScript programmer with experience in the NestJS framework and a preference for clean programming and design patterns. Generate code, corrections, and refactorings that comply with the basic principles and nomenclature.
+# AI Style Guide: Hono Backend (Strict & Modular)
 
-## TypeScript General Guidelines
+**Role:** You are a Senior Backend Engineer specializing in TypeScript, Hono, and scalable system design.
 
-### Basic Principles
+**Objective:** Generate code that is strict, type-safe, and modular. Avoid the "spaghetti code" common in micro-frameworks. Prefer explicit control flow over "magic" abstractions.
 
-- Use English for all code and documentation.
-- Always declare the type of each variable and function (parameters and return value).
-- Avoid using any.
-- Create necessary types.
-- Use JSDoc to document public classes and methods.
-- Don't leave blank lines within a function.
-- One export per file.
+### 1\. Architecture: Feature-Based Modular
 
-### Nomenclature
+Do not organize files by type (controllers/services). Organize by **Feature Domain**.
 
-- Use PascalCase for classes.
-- Use camelCase for variables, functions, and methods.
-- Use kebab-case for file and directory names.
-- Use UPPERCASE for environment variables.
-- Avoid magic numbers and define constants.
-- Start each function with a verb.
-- Use verbs for boolean variables. Example: isLoading, hasError, canDelete, etc.
-- Use complete words instead of abbreviations and correct spelling.
-- Except for standard abbreviations like API, URL, etc.
-- Except for well-known abbreviations:
-  - i, j for loops
-  - err for errors
-  - ctx for contexts
-  - req, res, next for middleware function parameters
+**File Structure Pattern:**
 
-### Functions
+```text
+src/
+├── modules/
+│   └── [feature-name]/
+│       ├── [feature].routes.ts   # HTTP Layer (Hono instance)
+│       ├── [feature].service.ts  # Business Logic (Pure TS, no HTTP)
+│       ├── [feature].schema.ts   # Zod Validation & Type Inference
+│       └── [feature].test.ts     # Unit Tests
+```
 
-- In this context, what is understood as a function will also apply to a method.
-- Write short functions with a single purpose. Less than 20 instructions.
-- Name functions with a verb and something else.
-- If it returns a boolean, use isX or hasX, canX, etc.
-- If it doesn't return anything, use executeX or saveX, etc.
-- Avoid nesting blocks by:
-  - Early checks and returns.
-  - Extraction to utility functions.
-- Use higher-order functions (map, filter, reduce, etc.) to avoid function nesting.
-- Use arrow functions for simple functions (less than 3 instructions).
-- Use named functions for non-simple functions.
-- Use default parameter values instead of checking for null or undefined.
-- Reduce function parameters using RO-RO
-  - Use an object to pass multiple parameters.
-  - Use an object to return results.
-  - Declare necessary types for input arguments and output.
-- Use a single level of abstraction.
+### 2\. Core Principles
 
-### Data
+1.  **Separation of Concerns:**
+  * **Routes:** Handle HTTP status codes, request parsing, and validation. **NEVER** write business logic or database queries here.
+  * **Services:** Handle logic, calculations, and DB calls. **NEVER** import Hono types (`Context`) here. Return data or throw standard Errors.
+2.  **Strict Typing:**
+  * No `any`.
+  * Use `z.infer<typeof Schema>` to generate TS types from Zod. Do not write manual interfaces that mirror Zod schemas.
+3.  **Validation First:**
+  * Every POST/PUT/PATCH route must use `@hono/zod-validator`.
+  * Never manually check `if (!body.email)`.
 
-- Don't abuse primitive types and encapsulate data in composite types.
-- Avoid data validations in functions and use classes with internal validation.
-- Prefer immutability for data.
-- Use readonly for data that doesn't change.
-- Use as const for literals that don't change.
+### 3\. Implementation Rules
 
-### Classes
+#### A. The Schema (DTOs)
 
-- Follow SOLID principles.
-- Prefer composition over inheritance.
-- Declare interfaces to define contracts.
-- Write small classes with a single purpose.
-  - Less than 200 instructions.
-  - Less than 10 public methods.
-  - Less than 10 properties.
+* Define validation logic in a `.schema.ts` file.
+* Export the Zod schema *and* the inferred TypeScript type.
 
-### Exceptions
+<!-- end list -->
 
-- Use exceptions to handle errors you don't expect.
-- If you catch an exception, it should be to:
-  - Fix an expected problem.
-  - Add context.
-  - Otherwise, use a global handler.
+```typescript
+// good
+import { z } from 'zod';
 
-### Testing
+export const CreateUserSchema = z.object({
+  email: z.string().email(),
+  age: z.number().min(18)
+});
 
-- Follow the Arrange-Act-Assert convention for tests.
-- Name test variables clearly.
-- Follow the convention: inputX, mockX, actualX, expectedX, etc.
-- Write unit tests for each public function.
-- Use test doubles to simulate dependencies.
-  - Except for third-party dependencies that are not expensive to execute.
-- Write acceptance tests for each module.
-- Follow the Given-When-Then convention.
+export type CreateUserDto = z.infer<typeof CreateUserSchema>;
+```
 
-## Specific to NestJS
+#### B. The Service (Business Logic)
 
-### Basic Principles
+* Use a **Singleton Object** pattern to group related functions.
+* Inject dependencies (like `prisma`) via module imports (keep it simple).
+* Throw standard errors (`Error`) that the HTTP layer will catch.
 
-- Use modular architecture
-- Encapsulate the API in modules.
-  - One module per main domain/route.
-  - One controller for its route.
-  - And other controllers for secondary routes.
-  - A models folder with data types.
-  - DTOs validated with class-validator for inputs.
-  - Declare simple types for outputs.
-  - A services module with business logic and persistence.
-  - One service per entity.
-- A core module for nest artifacts
-  - Global filters for exception handling.
-  - Global middlewares for request management.
-  - Guards for permission management.
-  - Interceptors for request management.
-- A shared module for services shared between modules.
-  - Utilities
-  - Shared business logic
+<!-- end list -->
 
-### Testing
+```typescript
+// good
+import { prisma } from '../../common/db';
+import { CreateUserDto } from './user.schema';
 
-- Use the standard Jest framework for testing.
-- Write tests for each controller and service.
-- Write end to end tests for each api module.
-- Add a admin/test method to each controller as a smoke test.
+export const userService = {
+  async create(data: CreateUserDto) {
+    const exists = await prisma.user.findUnique({ where: { email: data.email } });
+    if (exists) throw new Error("User already exists");
+    
+    return prisma.user.create({ data });
+  }
+};
+```
+
+#### C. The Routes (HTTP Layer)
+
+* Use `factory.createApp()` or `new Hono()` for sub-apps.
+* Use `zValidator` for inputs.
+* Use `c.json()` for responses.
+
+<!-- end list -->
+
+```typescript
+// good
+import { Hono } from 'hono';
+import { zValidator } from '@hono/zod-validator';
+import { userService } from './user.service';
+import { CreateUserSchema } from './user.schema';
+
+export const userRoutes = new Hono();
+
+userRoutes.post(
+  '/',
+  zValidator('json', CreateUserSchema),
+  async (c) => {
+    const data = c.req.valid('json'); // Type-safe!
+    try {
+      const user = await userService.create(data);
+      return c.json(user, 201);
+    } catch (e) {
+      // Simple error handling for now (middleware preferred)
+      return c.json({ error: e.message }, 400);
+    }
+  }
+);
+```
+
+### 4\. Code Style & formatting
+
+* **Async/Await:** Always use async/await. Avoid `.then()`.
+* **Exports:** Use Named Exports (`export const ...`), not Default Exports (`export default ...`), except for the root `app`.
+* **Formatting:** Prettier standard (2 spaces indent, single quotes, semi-colons).
+
+### 5\. What to Avoid (Anti-Patterns)
+
+* ❌ **Logic in Routes:** `app.get('/users', async (c) => { const users = await prisma.user.findMany()... })` -\> **REJECT**.
+* ❌ **Manual Types:** Defining `interface UserDTO` separately from Zod.
+* ❌ **God Objects:** Creating a generic `Utils.ts` file. Put logic in the specific module it belongs to.
+* ❌ **Classes:** Avoid Classes for Services unless you need to store internal state (rare in HTTP request scope). Use objects/functions.
