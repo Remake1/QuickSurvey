@@ -1,4 +1,4 @@
-import {ErrorResponseSchema} from "@quicksurvey/shared/schemas/auth.schema.ts";
+import {ErrorResponseSchema, type LoginDto, type RegisterDto} from "@quicksurvey/shared/schemas/auth.schema.ts";
 
 export class AuthError extends Error {
     constructor(message: string) {
@@ -30,10 +30,7 @@ export async function fetchMe() {
     return res.json();
 }
 
-export async function login(data: {
-    email: string;
-    password: string;
-}) {
+export async function login(data: LoginDto) {
     const res = await fetch("/auth/login", {
         method: "POST",
         credentials: "include",
@@ -54,4 +51,19 @@ export async function logout() {
         method: "POST",
         credentials: "include",
     });
+}
+
+export async function register(data: RegisterDto){
+    const res = await fetch("/auth/register", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+        await parseErrorResponse(res);
+    }
+
+    return res.json();
 }
