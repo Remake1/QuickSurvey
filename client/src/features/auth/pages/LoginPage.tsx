@@ -1,6 +1,6 @@
 import LoginForm from "@/features/auth/components/LoginForm.tsx";
-import {useLogin} from "@/features/auth/hooks/useLogin.ts";
-import {AuthError} from "@/features/auth/api/auth.api.ts";
+import { useLogin } from "@/features/auth/hooks/useLogin.ts";
+import { AuthError } from "@/features/auth/api/auth.api.ts";
 
 export default function LoginPage() {
     const login = useLogin();
@@ -15,7 +15,8 @@ export default function LoginPage() {
                         ? login.error.message
                         : null
                 }
+                onClearError={() => login.reset()}
             />
         </>
-      )
+    )
 }

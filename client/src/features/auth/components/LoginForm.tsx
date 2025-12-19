@@ -1,18 +1,19 @@
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/shared/components/ui/card.tsx";
-import {type LoginDto, LoginSchema} from "@quicksurvey/shared/schemas/auth.schema.ts";
-import {Controller, useForm} from "react-hook-form";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/shared/components/ui/card.tsx";
+import { type LoginDto, LoginSchema } from "@quicksurvey/shared/schemas/auth.schema.ts";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/shared/components/ui/field.tsx";
-import {Input} from "@/shared/components/ui/input.tsx";
-import {Button} from "@/shared/components/ui/button.tsx";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/components/ui/field.tsx";
+import { Input } from "@/shared/components/ui/input.tsx";
+import { Button } from "@/shared/components/ui/button.tsx";
 
 type Props = {
     onSubmit: (data: LoginDto) => void;
     isSubmitting?: boolean;
     submitError?: string | null;
+    onClearError?: () => void;
 };
 
-export default function LoginForm({ onSubmit, isSubmitting, submitError }: Props){
+export default function LoginForm({ onSubmit, isSubmitting, submitError, onClearError }: Props) {
     const form = useForm<LoginDto>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -21,7 +22,13 @@ export default function LoginForm({ onSubmit, isSubmitting, submitError }: Props
         },
     });
 
-    return(
+    const handleInputChange = () => {
+        if (submitError && onClearError) {
+            onClearError();
+        }
+    };
+
+    return (
         <>
             <Card className="w-full sm:max-w-md">
                 <CardHeader>
@@ -59,6 +66,10 @@ export default function LoginForm({ onSubmit, isSubmitting, submitError }: Props
                                             autoComplete="email"
                                             aria-invalid={fieldState.invalid}
                                             placeholder="you@example.com"
+                                            onChange={(e) => {
+                                                field.onChange(e);
+                                                handleInputChange();
+                                            }}
                                         />
                                         {fieldState.invalid && (
                                             <FieldError errors={[fieldState.error]} />
@@ -81,6 +92,10 @@ export default function LoginForm({ onSubmit, isSubmitting, submitError }: Props
                                             type="password"
                                             autoComplete="current-password"
                                             aria-invalid={fieldState.invalid}
+                                            onChange={(e) => {
+                                                field.onChange(e);
+                                                handleInputChange();
+                                            }}
                                         />
                                         {fieldState.invalid && (
                                             <FieldError errors={[fieldState.error]} />
