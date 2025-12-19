@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {Field, FieldError, FieldGroup, FieldLabel} from "@/shared/components/ui/field.tsx";
 import {Input} from "@/shared/components/ui/input.tsx";
 import {Button} from "@/shared/components/ui/button.tsx";
-import {useEffect} from "react";
 
 type Props = {
     onSubmit: (data: LoginDto) => void;
@@ -21,13 +20,6 @@ export default function LoginForm({ onSubmit, isSubmitting, submitError }: Props
             password: "",
         },
     });
-
-    useEffect(() => {
-        if (submitError) {
-            form.clearErrors();
-        }
-    }, [form.watch("email"), form.watch("password")]);
-
 
     return(
         <>
