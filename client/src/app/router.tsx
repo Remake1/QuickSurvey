@@ -1,5 +1,4 @@
 import {createBrowserRouter} from "react-router";
-
 import RootLayout from "./layouts/RootLayout.tsx";
 import GuestGuard from "@/app/guards/GuestGuard.tsx";
 import AuthGuard from "@/app/guards/AuthGuard.tsx";

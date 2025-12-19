@@ -19,4 +19,16 @@ export default defineConfig({
       '@quicksurvey/shared': path.resolve(__dirname, '../shared/src'),
     },
   },
+  server: {
+    proxy: {
+      "/auth": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+      "/graphql": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+    },
+  },
 })
