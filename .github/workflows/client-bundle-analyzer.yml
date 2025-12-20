@@ -1,0 +1,147 @@
+name: Client Bundle Analyzer
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  analyze-bundle:
+    name: Analyze Bundle Size
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build client
+        run: pnpm --filter client build
+
+      - name: Upload bundle stats
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-stats
+          path: client/dist/stats.json
+          retention-days: 30
+
+      - name: Generate bundle report
+        id: bundle-report
+        run: |
+          if [ -f "client/dist/stats.json" ]; then
+            # Build the report
+            REPORT="## 📦 Client Bundle Analysis\n\n"
+            REPORT+="✅ Bundle stats generated successfully\n\n"
+          
+            # Calculate total sizes
+            TOTAL_RAW=$(du -sb client/dist/assets | cut -f1)
+            TOTAL_RAW_HUMAN=$(numfmt --to=iec-i --suffix=B $TOTAL_RAW)
+          
+            # Calculate total gzip size
+            TOTAL_GZIP=0
+            for file in client/dist/assets/*.js client/dist/assets/*.css; do
+              if [ -f "$file" ]; then
+                GZIP_SIZE=$(gzip -c "$file" | wc -c)
+                TOTAL_GZIP=$((TOTAL_GZIP + GZIP_SIZE))
+              fi
+            done
+            TOTAL_GZIP_HUMAN=$(numfmt --to=iec-i --suffix=B $TOTAL_GZIP)
+          
+            REPORT+="### Total Bundle Size\n"
+            REPORT+="| Raw | Gzip |\n"
+            REPORT+="|-----|------|\n"
+            REPORT+="| $TOTAL_RAW_HUMAN | $TOTAL_GZIP_HUMAN |\n\n"
+          
+            REPORT+="### Asset Breakdown\n"
+            REPORT+="| File | Raw | Gzip |\n"
+            REPORT+="|------|-----|------|\n"
+          
+            for file in client/dist/assets/*.js client/dist/assets/*.css; do
+              if [ -f "$file" ]; then
+                FILENAME=$(basename "$file")
+                RAW_SIZE=$(stat -c%s "$file")
+                RAW_HUMAN=$(numfmt --to=iec-i --suffix=B $RAW_SIZE)
+                GZIP_SIZE=$(gzip -c "$file" | wc -c)
+                GZIP_HUMAN=$(numfmt --to=iec-i --suffix=B $GZIP_SIZE)
+                REPORT+="| $FILENAME | $RAW_HUMAN | $GZIP_HUMAN |\n"
+              fi
+            done
+          
+            REPORT+="\n📁 Full stats available in the **bundle-stats** artifact"
+          
+            # Output for GitHub Step Summary
+            echo -e "$REPORT" >> $GITHUB_STEP_SUMMARY
+          
+            # Save report for PR comment (escape for JSON)
+            echo "BUNDLE_REPORT<<EOF" >> $GITHUB_OUTPUT
+            echo -e "$REPORT" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            echo "success=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Failed to generate bundle stats" >> $GITHUB_STEP_SUMMARY
+            echo "success=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Comment on PR
+        if: steps.bundle-report.outputs.success == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `${{ steps.bundle-report.outputs.BUNDLE_REPORT }}`;
+            
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('📦 Client Bundle Analysis')
+            );
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: report
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: report
+              });
+            }

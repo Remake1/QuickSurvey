@@ -3,7 +3,9 @@ import { OpenAPIHono } from '@hono/zod-openapi';
 import { swaggerUI } from '@hono/swagger-ui';
 import type { PrismaClient } from './generated/prisma/client.ts';
 import { authRoutes } from './modules/auth/auth.routes.ts';
+import { surveyGraphQL } from './modules/surveys/survey.graphql.ts';
 import type { AuthUser } from './middleware/auth.middleware.ts';
+import withPrisma from './lib/prisma.ts';
 
 type ContextWithPrisma = {
   Variables: {
@@ -16,6 +18,10 @@ const app = new OpenAPIHono<ContextWithPrisma>();
 
 // Mount auth routes
 app.route('/auth', authRoutes);
+
+// Mount GraphQL endpoint (with Prisma middleware)
+app.use('/graphql', withPrisma);
+app.route('/graphql', surveyGraphQL);
 
 // Health check
 app.get('/', (c) => {
@@ -43,5 +49,7 @@ serve(
   (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
     console.log(`Swagger UI: http://localhost:${info.port}/swagger`);
+    console.log(`GraphQL: http://localhost:${info.port}/graphql`);
   }
 );
+
