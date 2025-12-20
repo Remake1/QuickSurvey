@@ -1,15 +1,13 @@
 import { Link } from "react-router";
 import { useAuthStore } from "@/features/auth/store/auth.store";
 import { Button } from "@/shared/components/ui/button";
-import { User, Settings } from "lucide-react";
+import { User, Settings, ChevronDown } from "lucide-react";
 import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger,
-} from "@/shared/components/ui/navigation-menu";
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/shared/components/ui/dropdown-menu";
 import { LogoutButton } from "@/features/auth/components/LogoutButton";
 
 export default function Header() {
@@ -28,40 +26,41 @@ export default function Header() {
                                 <Link to="/surveys">Surveys</Link>
                             </Button>
 
-                            <NavigationMenu viewport={false}>
-                                <NavigationMenuList>
-                                    <NavigationMenuItem>
-                                        <NavigationMenuTrigger className="flex items-center gap-2 border rounded-md px-3 py-1.25 h-auto">
-                                            <User className="h-4 w-4" />
-                                            <span className="text-sm font-medium">
-                                                {user.name}
-                                            </span>
-                                        </NavigationMenuTrigger>
-                                        <NavigationMenuContent className="right-0 left-auto w-auto min-w-50 mt-2">
-                                            <ul className="grid w-full gap-1">
-                                                <li>
-                                                    <NavigationMenuLink asChild>
-                                                        <Link
-                                                            to="/account"
-                                                            className="flex items-center gap-2 w-full p-2 rounded-md hover:bg-accent hover:text-accent-foreground text-sm font-medium"
-                                                        >
-                                                            <Settings className="h-4 w-4" />
-                                                            Manage account
-                                                        </Link>
-                                                    </NavigationMenuLink>
-                                                </li>
-                                                <li>
-                                                    <LogoutButton
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        className="flex items-center justify-start gap-2 w-full h-auto p-2 rounded-md hover:bg-red-500 hover:text-white text-destructive"
-                                                    />
-                                                </li>
-                                            </ul>
-                                        </NavigationMenuContent>
-                                    </NavigationMenuItem>
-                                </NavigationMenuList>
-                            </NavigationMenu>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        className="flex items-center gap-2"
+                                    >
+                                        <User className="h-4 w-4" />
+                                        <span className="text-sm font-medium">
+                                            {user.name}
+                                        </span>
+                                        <ChevronDown className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-48">
+                                    <DropdownMenuItem asChild>
+                                        <Link
+                                            to="/account"
+                                            className="flex items-center gap-2 cursor-pointer"
+                                        >
+                                            <Settings className="h-4 w-4" />
+                                            Manage account
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                        variant="destructive"
+                                        className="p-0 focus:bg-transparent"
+                                        onSelect={(e) => e.preventDefault()}
+                                    >
+                                        <LogoutButton
+                                            variant="ghost"
+                                            className="w-full justify-start text-destructive hover:text-destructive hover:bg-red-100"
+                                        />
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </>
                     ) : (
                         <>
