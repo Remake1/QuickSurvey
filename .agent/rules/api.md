@@ -1,5 +1,6 @@
 ---
-trigger: always_on
+trigger: glob
+globs: api/**
 ---
 
 # AI Style Guide: Hono Backend (Strict & Modular)
