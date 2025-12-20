@@ -12,6 +12,7 @@ import RegisterPage from "@/features/auth/pages/RegisterPage.tsx";
 import SurveyListPage from "@/features/surveys/pages/SurveyListPage.tsx";
 import SurveyEditorPage from "@/features/surveys/pages/SurveyEditorPage.tsx";
 import SurveyPublicPage from "@/features/surveys/pages/SurveyPublicPage.tsx";
+import AccountPage from "@/features/auth/pages/AccountPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
             {
                 element: <AuthGuard />,
                 children: [
+                    { path: "account", element: <AccountPage /> },
                     { path: "surveys", element: <SurveyListPage /> },
                     { path: "surveys/:id/edit", element: <SurveyEditorPage /> },
                 ],
