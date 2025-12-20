@@ -10,6 +10,7 @@ export function useMeQuery() {
         retry: false,
         staleTime: Infinity,
         gcTime: Infinity,
+        refetchOnMount: "always",
     });
 }
 

@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { useAuthStore } from "@/features/auth/store/auth.store";
 import { Button } from "@/shared/components/ui/button";
-import { User, Settings, LogOut } from "lucide-react";
+import { User, Settings } from "lucide-react";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -10,15 +10,10 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
 } from "@/shared/components/ui/navigation-menu";
+import { LogoutButton } from "@/features/auth/components/LogoutButton";
 
 export default function Header() {
     const user = useAuthStore((state) => state.user);
-    const logout = useAuthStore((state) => state.setUser); // Placeholder for logout
-
-    const handleLogout = () => {
-        logout(null); // Clear user
-        // Additional logout logic (api call) would go here
-    };
 
     return (
         <header className="border-b bg-background w-full">
@@ -56,17 +51,11 @@ export default function Header() {
                                                     </NavigationMenuLink>
                                                 </li>
                                                 <li>
-                                                    <NavigationMenuLink asChild>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            onClick={handleLogout}
-                                                            className="flex items-center justify-start gap-2 w-full h-auto p-2 rounded-md hover:bg-red-500 hover:text-white text-destructive"
-                                                        >
-                                                            <LogOut className="h-4 w-4" />
-                                                            Logout
-                                                        </Button>
-                                                    </NavigationMenuLink>
+                                                    <LogoutButton
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        className="flex items-center justify-start gap-2 w-full h-auto p-2 rounded-md hover:bg-red-500 hover:text-white text-destructive"
+                                                    />
                                                 </li>
                                             </ul>
                                         </NavigationMenuContent>
