@@ -30,7 +30,7 @@ export default function LoginForm({ onSubmit, isSubmitting, submitError, onClear
 
     return (
         <>
-            <Card className="w-full sm:max-w-md">
+            <Card className="w-full sm:max-w-md mx-auto">
                 <CardHeader>
                     <CardTitle>Login</CardTitle>
                     <CardDescription>

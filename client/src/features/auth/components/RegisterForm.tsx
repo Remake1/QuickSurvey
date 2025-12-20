@@ -1,10 +1,10 @@
-import {type RegisterDto, RegisterSchema} from "@quicksurvey/shared/schemas/auth.schema.ts";
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/shared/components/ui/card.tsx";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/shared/components/ui/field.tsx";
-import {Input} from "@/shared/components/ui/input.tsx";
-import {Button} from "@/shared/components/ui/button.tsx";
+import { type RegisterDto, RegisterSchema } from "@quicksurvey/shared/schemas/auth.schema.ts";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/shared/components/ui/card.tsx";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/components/ui/field.tsx";
+import { Input } from "@/shared/components/ui/input.tsx";
+import { Button } from "@/shared/components/ui/button.tsx";
 
 type Props = {
     onSubmit: (data: RegisterDto) => void;
@@ -31,7 +31,7 @@ export default function RegisterForm({ onSubmit, isSubmitting, submitError, onCl
 
     return (
         <>
-            <Card className="w-full sm:max-w-md">
+            <Card className="w-full sm:max-w-md mx-auto">
                 <CardHeader>
                     <CardTitle>Create an account</CardTitle>
                     <CardDescription>
