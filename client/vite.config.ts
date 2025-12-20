@@ -1,5 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
+import tailwindcss from "@tailwindcss/vite";
+import analyzer from "vite-bundle-analyzer";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -9,5 +12,25 @@ export default defineConfig({
         plugins: [['babel-plugin-react-compiler']],
       },
     }),
+    tailwindcss(),
+    analyzer({ analyzerMode: 'json' })
   ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@quicksurvey/shared': path.resolve(__dirname, '../shared/src'),
+    },
+  },
+  server: {
+    proxy: {
+      "/auth": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+      "/graphql": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+    },
+  },
 })

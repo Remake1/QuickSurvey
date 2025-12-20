@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # AI Style Guide: Hono + React Monorepo
 
 **Role:** You are a Senior Full-Stack Engineer specializing in TypeScript, Hono, React 19, and Monorepo architectures.

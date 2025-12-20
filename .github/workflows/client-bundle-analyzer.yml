@@ -1,0 +1,77 @@
+name: Client Bundle Analyzer
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  analyze-bundle:
+    name: Analyze Bundle Size
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build client
+        run: pnpm --filter client build
+
+      - name: Upload bundle stats
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-stats
+          path: client/dist/stats.json
+          retention-days: 30
+
+      - name: Report bundle size
+        run: |
+          echo "## 📦 Client Bundle Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f "client/dist/stats.json" ]; then
+            echo "✅ Bundle stats generated successfully" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Calculate total bundle size from dist folder
+            TOTAL_SIZE=$(du -sh client/dist | cut -f1)
+            echo "### Total Bundle Size: \`$TOTAL_SIZE\`" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # List JS and CSS files with sizes
+            echo "### Asset Breakdown" >> $GITHUB_STEP_SUMMARY
+            echo "| File | Size |" >> $GITHUB_STEP_SUMMARY
+            echo "|------|------|" >> $GITHUB_STEP_SUMMARY
+            find client/dist/assets -type f \( -name "*.js" -o -name "*.css" \) -exec ls -lh {} \; | awk '{print "| " $NF " | " $5 " |"}' | sed 's|client/dist/assets/||' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            echo "📁 Full stats available in the **bundle-stats** artifact" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Failed to generate bundle stats" >> $GITHUB_STEP_SUMMARY
+          fi
