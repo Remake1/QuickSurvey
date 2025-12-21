@@ -9,9 +9,9 @@ import HomePage from "@/pages/HomePage.tsx";
 import LoginPage from "@/features/auth/pages/LoginPage.tsx";
 import RegisterPage from "@/features/auth/pages/RegisterPage.tsx";
 
-import SurveyListPage from "@/features/surveys/pages/SurveyListPage.tsx";
-import SurveyEditorPage from "@/features/surveys/pages/SurveyEditorPage.tsx";
-import SurveyPublicPage from "@/features/surveys/pages/SurveyPublicPage.tsx";
+import SurveyListPage from "@/features/survey/pages/SurveyListPage.tsx";
+import SurveyEditorPage from "@/features/survey/pages/SurveyEditorPage.tsx";
+import SurveyPublicPage from "@/features/survey/pages/SurveyPublicPage.tsx";
 import AccountPage from "@/features/auth/pages/AccountPage.tsx";
 
 const router = createBrowserRouter([
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
                 children: [
                     { path: "account", element: <AccountPage /> },
                     { path: "surveys", element: <SurveyListPage /> },
-                    { path: "surveys/:id/edit", element: <SurveyEditorPage /> },
+                    { path: "survey/:id/edit", element: <SurveyEditorPage /> },
                 ],
             },
 
