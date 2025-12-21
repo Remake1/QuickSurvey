@@ -62,7 +62,7 @@ export const surveyService = {
     },
 
     /**
-     * Find all surveys by owner
+     * Find all survey by owner
      */
     async findByOwner(ownerId: string, prisma: PrismaClient) {
         const surveys = await prisma.survey.findMany({
