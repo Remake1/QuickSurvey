@@ -2,7 +2,9 @@ import { surveyService } from './survey.service.ts';
 import {
     builder,
     SurveyRef,
+    SurveyResponseRef,
     CreateSurveyInput,
+    SubmitResponseInput,
     type GraphQLContext,
 } from './survey.schema.ts';
 
@@ -45,6 +47,24 @@ builder.queryType({
                 }
 
                 return surveyService.findByOwner(context.user.id, context.prisma);
+            },
+        }),
+
+        surveyResponses: t.field({
+            type: [SurveyResponseRef],
+            args: {
+                surveyId: t.arg.id({ required: true }),
+            },
+            resolve: async (_parent, args, context: GraphQLContext) => {
+                if (!context.user) {
+                    throw new Error('Authentication required');
+                }
+
+                return surveyService.getResponses(
+                    args.surveyId as string,
+                    context.user.id,
+                    context.prisma
+                );
             },
         }),
     }),
@@ -140,6 +160,30 @@ builder.mutationType({
                     context.user.id,
                     context.prisma
                 );
+            },
+        }),
+
+        submitResponse: t.field({
+            type: SurveyResponseRef,
+            args: {
+                input: t.arg({ type: SubmitResponseInput, required: true }),
+            },
+            resolve: async (_parent, args, context: GraphQLContext) => {
+                // No authentication required - anyone can submit to published surveys
+                const input = {
+                    surveyId: args.input.surveyId as string,
+                    answers: args.input.answers.map((a) => ({
+                        questionId: a.questionId as string,
+                        type: a.type,
+                        textValue: a.textValue ?? undefined,
+                        choiceValue: a.choiceValue ?? undefined,
+                        checkboxValues: a.checkboxValues ?? undefined,
+                        dateValue: a.dateValue ?? undefined,
+                        scaleValue: a.scaleValue ?? undefined,
+                    })),
+                };
+
+                return surveyService.submitResponse(input, context.prisma);
             },
         }),
     }),

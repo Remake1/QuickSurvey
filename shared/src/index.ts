@@ -4,3 +4,4 @@
 export * from './schemas/auth.schema.ts';
 export * from './schemas/question.schema.ts';
 export * from './schemas/survey.schema.ts';
+export * from './schemas/response.schema.ts';
