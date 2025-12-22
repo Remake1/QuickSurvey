@@ -1,4 +1,5 @@
 import { createYoga } from 'graphql-yoga';
+import { GraphQLError } from 'graphql';
 import { Hono } from 'hono';
 import { getCookie } from 'hono/cookie';
 import type { Context } from 'hono';
@@ -32,6 +33,22 @@ const createYogaHandler = (prisma: PrismaClient, user: AuthUser | null) => {
         graphqlEndpoint: '/graphql',
         // Enable GraphiQL in development
         graphiql: process.env.NODE_ENV !== 'production',
+        // Expose actual error messages instead of "Unexpected error"
+        maskedErrors: {
+            isDev: process.env.NODE_ENV !== 'production',
+            maskError: (error, message) => {
+                // Log the error for debugging
+                console.error(error);
+
+                // Return the GraphQL error with the actual message
+                // For business logic errors thrown from resolvers, expose the message
+                if (error instanceof Error && error.message) {
+                    return new GraphQLError(error.message);
+                }
+
+                return new GraphQLError(message);
+            },
+        },
     });
 };
 
