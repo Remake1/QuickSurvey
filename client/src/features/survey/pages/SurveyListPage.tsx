@@ -1,12 +1,12 @@
 import type { ShortAnswerQuestion, ParagraphQuestion, MultipleChoiceQuestion, CheckboxesQuestion, DropdownQuestion, DateQuestion, LinearScaleQuestion } from "@quicksurvey/shared/schemas/question.schema.ts";
 import { useForm } from "react-hook-form";
-import { ShortAnswerQuestionField } from "../components/ShortAnswerQuestion.tsx";
-import { ParagraphQuestion as ParagraphQuestionField } from "../components/ParagraphQuestion.tsx";
-import { MultipleChoiceQuestionField } from "../components/MultipleChoiceQuestion.tsx";
-import { CheckboxesQuestionField } from "../components/CheckboxesQuestion.tsx";
-import { DropdownQuestionField } from "../components/DropdownQuestion.tsx";
-import { DateQuestionField } from "../components/DateQuestion.tsx";
-import { LinearScaleQuestionField } from "../components/LinearScaleQuestion.tsx";
+import { ShortAnswerQuestionField } from "../components/questions/ShortAnswerQuestion.tsx";
+import { ParagraphQuestion as ParagraphQuestionField } from "../components/questions/ParagraphQuestion.tsx";
+import { MultipleChoiceQuestionField } from "../components/questions/MultipleChoiceQuestion.tsx";
+import { CheckboxesQuestionField } from "../components/questions/CheckboxesQuestion.tsx";
+import { DropdownQuestionField } from "../components/questions/DropdownQuestion.tsx";
+import { DateQuestionField } from "../components/questions/DateQuestion.tsx";
+import { LinearScaleQuestionField } from "../components/questions/LinearScaleQuestion.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { FieldGroup } from "@/shared/components/ui/field.tsx";
 
