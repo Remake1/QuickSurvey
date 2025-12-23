@@ -1,5 +1,6 @@
-import {createBrowserRouter} from "react-router";
+import { createBrowserRouter } from "react-router";
 import RootLayout from "./layouts/RootLayout.tsx";
+import PublicLayout from "./layouts/PublicLayout.tsx";
 import GuestGuard from "@/app/guards/GuestGuard.tsx";
 import AuthGuard from "@/app/guards/AuthGuard.tsx";
 
@@ -37,7 +38,12 @@ const router = createBrowserRouter([
                     { path: "survey/:id/edit", element: <SurveyEditorPage /> },
                 ],
             },
-
+        ],
+    },
+    {
+        element: <PublicLayout />,
+        errorElement: <RouteErrorPage />,
+        children: [
             { path: "s/:id", element: <SurveyPublicPage /> },
         ],
     },
