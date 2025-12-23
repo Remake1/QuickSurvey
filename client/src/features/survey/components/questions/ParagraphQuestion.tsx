@@ -9,7 +9,7 @@ type Props = {
     control: Control;
 };
 
-export function ParagraphQuestion({ question, control }: Props) {
+export function ParagraphQuestionField({ question, control }: Props) {
     return (
         <Controller
             name={question.id}
