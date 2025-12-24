@@ -1,4 +1,5 @@
 import { MY_SURVEYS_QUERY } from './mySurveys.gql.ts';
+import { PUBLISH_SURVEY_MUTATION, UNPUBLISH_SURVEY_MUTATION } from './surveyStatus.gql.ts';
 import { type SurveyListItem, type SurveyStatus } from '@quicksurvey/shared/schemas/survey.schema.ts';
 
 interface RawSurvey {
@@ -48,4 +49,58 @@ export async function fetchMySurveys(): Promise<SurveyListItem[]> {
         questionCount: survey.questions.length,
         createdAt: new Date(survey.createdAt),
     }));
+}
+
+interface StatusMutationResponse {
+    data: {
+        publishSurvey?: { id: string; status: SurveyStatus };
+        unpublishSurvey?: { id: string; status: SurveyStatus };
+    };
+    errors?: { message: string }[];
+}
+
+export async function publishSurvey(id: string): Promise<void> {
+    const res = await fetch('/graphql', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+            query: PUBLISH_SURVEY_MUTATION,
+            variables: { id },
+        }),
+    });
+
+    if (!res.ok) {
+        throw new Error('Failed to publish survey');
+    }
+
+    const result = (await res.json()) as StatusMutationResponse;
+    if (result.errors) {
+        throw new Error(result.errors[0].message);
+    }
+}
+
+export async function unpublishSurvey(id: string): Promise<void> {
+    const res = await fetch('/graphql', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+            query: UNPUBLISH_SURVEY_MUTATION,
+            variables: { id },
+        }),
+    });
+
+    if (!res.ok) {
+        throw new Error('Failed to unpublish survey');
+    }
+
+    const result = (await res.json()) as StatusMutationResponse;
+    if (result.errors) {
+        throw new Error(result.errors[0].message);
+    }
 }
