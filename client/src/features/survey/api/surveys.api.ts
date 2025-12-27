@@ -1,6 +1,7 @@
 import { MY_SURVEYS_QUERY } from './mySurveys.gql.ts';
 import { PUBLISH_SURVEY_MUTATION, UNPUBLISH_SURVEY_MUTATION } from './surveyStatus.gql.ts';
-import { type SurveyListItem, type SurveyStatus } from '@quicksurvey/shared/schemas/survey.schema.ts';
+import { CREATE_SURVEY_MUTATION } from './createSurvey.gql.ts';
+import { type SurveyListItem, type SurveyStatus, type CreateSurveyDto } from '@quicksurvey/shared/schemas/survey.schema.ts';
 
 interface RawSurvey {
     id: string;
@@ -103,4 +104,41 @@ export async function unpublishSurvey(id: string): Promise<void> {
     if (result.errors) {
         throw new Error(result.errors[0].message);
     }
+}
+
+interface CreateSurveyResponse {
+    data: {
+        createSurvey: {
+            id: string;
+            title: string;
+            description: string | null;
+            status: SurveyStatus;
+        };
+    };
+    errors?: { message: string }[];
+}
+
+export async function createSurvey(input: CreateSurveyDto): Promise<{ id: string }> {
+    const res = await fetch('/graphql', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+            query: CREATE_SURVEY_MUTATION,
+            variables: { input },
+        }),
+    });
+
+    if (!res.ok) {
+        throw new Error('Failed to create survey');
+    }
+
+    const result = (await res.json()) as CreateSurveyResponse;
+    if (result.errors) {
+        throw new Error(result.errors[0].message);
+    }
+
+    return { id: result.data.createSurvey.id };
 }
