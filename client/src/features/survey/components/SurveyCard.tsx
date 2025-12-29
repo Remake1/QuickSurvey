@@ -5,40 +5,18 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Badge } from '@/shared/components/ui/badge';
 import { Button } from '@/shared/components/ui/button';
 import {
-    Calendar,
-    ExternalLink,
-    MessageCircleQuestionMark,
-    Pencil,
-    Globe,
-    GlobeLock,
+  Calendar,
+  MessageCircleQuestionMark,
+  Pencil,
+  Globe,
+  GlobeLock,
+  Link2,
 } from "lucide-react";
 import { usePublishSurvey } from '@/features/survey/hooks/usePublishSurvey.ts';
 import { useUnpublishSurvey } from '@/features/survey/hooks/useUnpublishSurvey.ts';
 import { PublishSurveyDialog } from './PublishSurveyDialog.tsx';
 import { UnpublishSurveyDialog } from './UnpublishSurveyDialog.tsx';
-
-function formatTimeAgo(date: Date): string {
-    const now = new Date();
-    const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    const intervals = [
-        { label: 'year', seconds: 31536000 },
-        { label: 'month', seconds: 2592000 },
-        { label: 'week', seconds: 604800 },
-        { label: 'day', seconds: 86400 },
-        { label: 'hour', seconds: 3600 },
-        { label: 'minute', seconds: 60 },
-    ];
-
-    for (const interval of intervals) {
-        const count = Math.floor(seconds / interval.seconds);
-        if (count >= 1) {
-            return `${count} ${interval.label}${count !== 1 ? 's' : ''} ago`;
-        }
-    }
-
-    return 'just now';
-}
+import { formatTimeAgo } from '@/shared/lib/utils.ts'
 
 interface SurveyCardProps {
     survey: SurveyListItem;
@@ -102,8 +80,8 @@ export function SurveyCard({ survey }: SurveyCardProps) {
                         <>
                             <Button variant="outline" size="sm" asChild>
                                 <Link to={`/s/${survey.id}`}>
-                                    <ExternalLink className="h-4 w-4" />
-                                    Public Link
+                                    <Link2 className="h-4 w-4" />
+                                    {/*Public Link*/}
                                 </Link>
                             </Button>
                             <Button
