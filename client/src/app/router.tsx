@@ -9,12 +9,13 @@ import RouteErrorPage from "@/pages/RouteErrorPage.tsx";
 import HomePage from "@/pages/HomePage.tsx";
 import LoginPage from "@/features/auth/pages/LoginPage.tsx";
 import RegisterPage from "@/features/auth/pages/RegisterPage.tsx";
+import AccountPage from "@/features/auth/pages/AccountPage.tsx";
 
 import SurveyListPage from "@/features/survey/pages/SurveyListPage.tsx";
 import SurveyCreatePage from "@/features/survey/pages/SurveyCreatePage.tsx";
 import SurveyEditorPage from "@/features/survey/pages/SurveyEditorPage.tsx";
 import SurveyPublicPage from "@/features/survey/pages/SurveyPublicPage.tsx";
-import AccountPage from "@/features/auth/pages/AccountPage.tsx";
+import SurveyResponsesPage from "@/features/survey/pages/SurveyResponsesPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
                     { path: "surveys/new", element: <SurveyCreatePage /> },
                     { path: "surveys", element: <SurveyListPage /> },
                     { path: "survey/:id/edit", element: <SurveyEditorPage /> },
+                    { path: "survey/:id/responses", element: <SurveyResponsesPage /> },
                 ],
             },
         ],

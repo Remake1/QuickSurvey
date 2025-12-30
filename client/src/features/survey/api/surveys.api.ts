@@ -1,6 +1,7 @@
 import { MY_SURVEYS_QUERY } from './mySurveys.gql.ts';
 import { PUBLISH_SURVEY_MUTATION, UNPUBLISH_SURVEY_MUTATION } from './surveyStatus.gql.ts';
 import { CREATE_SURVEY_MUTATION } from './createSurvey.gql.ts';
+import { SURVEY_RESPONSES_QUERY } from './surveyResponses.gql.ts';
 import { type SurveyListItem, type SurveyStatus, type CreateSurveyDto } from '@quicksurvey/shared/schemas/survey.schema.ts';
 
 interface RawSurvey {
@@ -141,4 +142,67 @@ export async function createSurvey(input: CreateSurveyDto): Promise<{ id: string
     }
 
     return { id: result.data.createSurvey.id };
+}
+
+// ===== SURVEY RESPONSES =====
+
+export interface Answer {
+    questionId: string;
+    type: string;
+    textValue: string | null;
+    choiceValue: string | null;
+    checkboxValues: string[] | null;
+    dateValue: string | null;
+    scaleValue: number | null;
+}
+
+export interface SurveyResponse {
+    id: string;
+    surveyId: string;
+    answers: Answer[];
+    createdAt: Date;
+}
+
+interface RawSurveyResponse {
+    id: string;
+    surveyId: string;
+    answers: Answer[];
+    createdAt: string;
+}
+
+interface SurveyResponsesResponse {
+    data: {
+        surveyResponses: RawSurveyResponse[];
+    };
+    errors?: { message: string }[];
+}
+
+export async function fetchSurveyResponses(surveyId: string): Promise<SurveyResponse[]> {
+    const res = await fetch('/graphql', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+            query: SURVEY_RESPONSES_QUERY,
+            variables: { surveyId },
+        }),
+    });
+
+    if (!res.ok) {
+        throw new Error('Failed to fetch survey responses');
+    }
+
+    const result = (await res.json()) as SurveyResponsesResponse;
+    if (result.errors) {
+        throw new Error(result.errors[0].message);
+    }
+
+    return result.data.surveyResponses.map((response) => ({
+        id: response.id,
+        surveyId: response.surveyId,
+        answers: response.answers,
+        createdAt: new Date(response.createdAt),
+    }));
 }
