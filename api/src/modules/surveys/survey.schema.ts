@@ -56,6 +56,25 @@ interface SurveyShape {
     updatedAt: Date;
 }
 
+// Answer shape for response submissions
+interface AnswerShape {
+    questionId: string;
+    type: string;
+    textValue?: string;
+    choiceValue?: string;
+    checkboxValues?: string[];
+    dateValue?: string;
+    scaleValue?: number;
+}
+
+// Survey response shape
+interface SurveyResponseShape {
+    id: string;
+    surveyId: string;
+    answers: unknown;
+    createdAt: Date;
+}
+
 // Initialize Pothos Schema Builder with type mappings
 export const builder = new SchemaBuilder<{
     Context: GraphQLContext;
@@ -67,6 +86,8 @@ export const builder = new SchemaBuilder<{
         ScaleQuestion: ScaleQuestionShape;
         SurveyOwner: SurveyOwnerShape;
         Survey: SurveyShape;
+        Answer: AnswerShape;
+        SurveyResponse: SurveyResponseShape;
     };
     Interfaces: {
         Question: QuestionShape;
@@ -78,6 +99,7 @@ export const builder = new SchemaBuilder<{
         };
     };
 }>({});
+
 
 // Add DateTime scalar
 builder.scalarType('DateTime', {
@@ -280,5 +302,80 @@ export const CreateSurveyInput = builder.inputType('CreateSurveyInput', {
         title: t.string({ required: true }),
         description: t.string({ required: false }),
         questions: t.field({ type: [QuestionInput], required: true }),
+    }),
+});
+
+// ===== RESPONSE TYPES =====
+
+// Answer type (flattened for simplicity)
+builder.objectType('Answer', {
+    fields: (t) => ({
+        questionId: t.exposeID('questionId'),
+        type: t.field({
+            type: QuestionTypeEnum,
+            resolve: (parent: AnswerShape) => parent.type as typeof QuestionTypeEnum.$inferType,
+        }),
+        textValue: t.string({
+            nullable: true,
+            resolve: (parent: AnswerShape) => parent.textValue ?? null,
+        }),
+        choiceValue: t.string({
+            nullable: true,
+            resolve: (parent: AnswerShape) => parent.choiceValue ?? null,
+        }),
+        checkboxValues: t.stringList({
+            nullable: true,
+            resolve: (parent: AnswerShape) => parent.checkboxValues ?? null,
+        }),
+        dateValue: t.string({
+            nullable: true,
+            resolve: (parent: AnswerShape) => parent.dateValue ?? null,
+        }),
+        scaleValue: t.int({
+            nullable: true,
+            resolve: (parent: AnswerShape) => parent.scaleValue ?? null,
+        }),
+    }),
+});
+
+// Survey Response type
+export const SurveyResponseRef = builder.objectRef<SurveyResponseShape>('SurveyResponse');
+
+builder.objectType(SurveyResponseRef, {
+    fields: (t) => ({
+        id: t.exposeID('id'),
+        surveyId: t.exposeID('surveyId'),
+        answers: t.field({
+            type: ['Answer'],
+            resolve: (parent) => {
+                const answers = parent.answers;
+                return (Array.isArray(answers) ? answers : []) as AnswerShape[];
+            },
+        }),
+        createdAt: t.field({
+            type: 'DateTime',
+            resolve: (parent) => parent.createdAt,
+        }),
+    }),
+});
+
+// ===== RESPONSE INPUT TYPES =====
+
+export const AnswerInput = builder.inputType('AnswerInput', {
+    fields: (t) => ({
+        questionId: t.id({ required: true }),
+        type: t.field({ type: QuestionTypeEnum, required: true }),
+        textValue: t.string({ required: false }),
+        choiceValue: t.string({ required: false }),
+        checkboxValues: t.stringList({ required: false }),
+        dateValue: t.string({ required: false }),
+        scaleValue: t.int({ required: false }),
+    }),
+});
+
+export const SubmitResponseInput = builder.inputType('SubmitResponseInput', {
+    fields: (t) => ({
+        surveyId: t.id({ required: true }),
+        answers: t.field({ type: [AnswerInput], required: true }),
     }),
 });

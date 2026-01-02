@@ -1,5 +1,6 @@
-import {createBrowserRouter} from "react-router";
+import { createBrowserRouter } from "react-router";
 import RootLayout from "./layouts/RootLayout.tsx";
+import PublicLayout from "./layouts/PublicLayout.tsx";
 import GuestGuard from "@/app/guards/GuestGuard.tsx";
 import AuthGuard from "@/app/guards/AuthGuard.tsx";
 
@@ -8,11 +9,13 @@ import RouteErrorPage from "@/pages/RouteErrorPage.tsx";
 import HomePage from "@/pages/HomePage.tsx";
 import LoginPage from "@/features/auth/pages/LoginPage.tsx";
 import RegisterPage from "@/features/auth/pages/RegisterPage.tsx";
-
-import SurveyListPage from "@/features/surveys/pages/SurveyListPage.tsx";
-import SurveyEditorPage from "@/features/surveys/pages/SurveyEditorPage.tsx";
-import SurveyPublicPage from "@/features/surveys/pages/SurveyPublicPage.tsx";
 import AccountPage from "@/features/auth/pages/AccountPage.tsx";
+
+import SurveyListPage from "@/features/survey/pages/SurveyListPage.tsx";
+import SurveyCreatePage from "@/features/survey/pages/SurveyCreatePage.tsx";
+import SurveyEditorPage from "@/features/survey/pages/SurveyEditorPage.tsx";
+import SurveyPublicPage from "@/features/survey/pages/SurveyPublicPage.tsx";
+import SurveyResponsesPage from "@/features/survey/pages/SurveyResponsesPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -33,11 +36,18 @@ const router = createBrowserRouter([
                 element: <AuthGuard />,
                 children: [
                     { path: "account", element: <AccountPage /> },
+                    { path: "surveys/new", element: <SurveyCreatePage /> },
                     { path: "surveys", element: <SurveyListPage /> },
-                    { path: "surveys/:id/edit", element: <SurveyEditorPage /> },
+                    { path: "survey/:id/edit", element: <SurveyEditorPage /> },
+                    { path: "survey/:id/responses", element: <SurveyResponsesPage /> },
                 ],
             },
-
+        ],
+    },
+    {
+        element: <PublicLayout />,
+        errorElement: <RouteErrorPage />,
+        children: [
             { path: "s/:id", element: <SurveyPublicPage /> },
         ],
     },
