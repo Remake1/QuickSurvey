@@ -7,10 +7,10 @@ import { Button } from '@/shared/components/ui/button';
 import {
   Calendar,
   MessageCircleQuestionMark,
-  Pencil,
   Globe,
   GlobeLock,
   Link2,
+  MessagesSquare,
 } from "lucide-react";
 import { usePublishSurvey } from '@/features/survey/hooks/usePublishSurvey.ts';
 import { useUnpublishSurvey } from '@/features/survey/hooks/useUnpublishSurvey.ts';
@@ -81,7 +81,7 @@ export function SurveyCard({ survey }: SurveyCardProps) {
                             <Button variant="outline" size="sm" asChild>
                                 <Link to={`/s/${survey.id}`}>
                                     <Link2 className="h-4 w-4" />
-                                    {/*Public Link*/}
+                                    Link
                                 </Link>
                             </Button>
                             <Button
@@ -103,10 +103,16 @@ export function SurveyCard({ survey }: SurveyCardProps) {
                             Publish
                         </Button>
                     )}
+                    {/*<Button variant="outline" size="sm" asChild>*/}
+                    {/*    <Link to={`/survey/${survey.id}/edit`}>*/}
+                    {/*        <Pencil className="h-4 w-4" />*/}
+                    {/*        Edit*/}
+                    {/*    </Link>*/}
+                    {/*</Button>*/}
                     <Button variant="outline" size="sm" asChild>
-                        <Link to={`/survey/${survey.id}/edit`}>
-                            <Pencil className="h-4 w-4" />
-                            Edit
+                        <Link to={`/survey/${survey.id}/responses`}>
+                            <MessagesSquare className="h-4 w-4" />
+                            Responses
                         </Link>
                     </Button>
                 </CardFooter>
