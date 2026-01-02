@@ -1,5 +1,13 @@
 # QuickSurvey
 
+## Screenshots
+![Screenshot 1](docs/images/img.png)
+![Screenshot 1](docs/images/img_1.png)
+![Screenshot 1](docs/images/img_2.png)
+![Screenshot 1](docs/images/img_3.png)
+![Screenshot 1](docs/images/img_4.png)
+![Screenshot 1](docs/images/img_5.png)
+
 A monorepo built with **Hono**, **Vite**, **React**, and **Turborepo**.
 
 ## 📁 Project Structure
