@@ -81,7 +81,7 @@ export function SurveyCard({ survey }: SurveyCardProps) {
                             <Button variant="outline" size="sm" asChild>
                                 <Link to={`/s/${survey.id}`}>
                                     <Link2 className="h-4 w-4" />
-                                    {/*Public Link*/}
+                                    Link
                                 </Link>
                             </Button>
                             <Button

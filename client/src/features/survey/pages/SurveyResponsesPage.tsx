@@ -1,9 +1,11 @@
 import { useParams, Link } from "react-router";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, TableIcon, BarChart3 } from "lucide-react";
 import { useSurveyResponses } from "@/features/survey/hooks/useSurveyResponses";
 import { usePublicSurvey } from "@/features/survey/hooks/usePublicSurvey";
 import { ResponsesTable } from "@/features/survey/components/ResponsesTable";
+import { ResponseStats } from "@/features/survey/components/ResponseStats";
 import { Button } from "@/shared/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
 
 export default function SurveyResponsesPage() {
     const { id } = useParams<{ id: string }>();
@@ -33,6 +35,8 @@ export default function SurveyResponsesPage() {
         );
     }
 
+    const hasResponses = responses && responses.length > 0;
+
     return (
         <div className="container mx-auto py-8 px-4">
             <div className="flex items-center gap-4 mb-6">
@@ -50,12 +54,29 @@ export default function SurveyResponsesPage() {
                 </div>
             </div>
 
-            {!responses || responses.length === 0 ? (
+            {!hasResponses ? (
                 <div className="text-center py-12 text-muted-foreground border rounded-md">
                     No responses yet. Share your survey to start collecting responses!
                 </div>
             ) : (
-                <ResponsesTable responses={responses} questions={survey.questions} />
+                <Tabs defaultValue="table" className="w-full">
+                    <TabsList>
+                        <TabsTrigger value="table">
+                            <TableIcon className="h-4 w-4" />
+                            Responses
+                        </TabsTrigger>
+                        <TabsTrigger value="charts">
+                            <BarChart3 className="h-4 w-4" />
+                            Stats
+                        </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="table" className="mt-4">
+                        <ResponsesTable responses={responses} questions={survey.questions} />
+                    </TabsContent>
+                    <TabsContent value="charts" className="mt-4">
+                        <ResponseStats responses={responses} questions={survey.questions} />
+                    </TabsContent>
+                </Tabs>
             )}
         </div>
     );
