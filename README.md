@@ -14,27 +14,27 @@ A monorepo built with **Hono**, **Vite**, **React**, and **Turborepo**.
 
 ```
 QuickSurvey/
-├── api/          # Hono backend API (TypeScript)
-├── client/       # React frontend (Vite + TypeScript)
-├── shared/       # Shared types and utilities
+├── api/          # Hono backend API
+├── client/       # React frontend
+├── shared/       # Shared types
 ├── docker-compose.yaml
 ├── turbo.json
 └── package.json
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v20+)
-- [pnpm](https://pnpm.io/) (v10.20.0)
+- [pnpm](https://pnpm.io/) 
 - [Docker](https://www.docker.com/) (for database)
 
 ### Installation
 
 ```bash
-# Clone the repository
-git clone <repository-url>
+# Clone repository
+git clone https://github.com/Remake1/QuickSurvey.git
 cd QuickSurvey
 
 # Install dependencies
@@ -48,10 +48,10 @@ pnpm install
 cp .env.example .env
 cp api/.env.example api/.env
 
-# Edit api/.env with your database credentials
+# Edit api/.env with postgres credentials
 ```
 
-### Start Infrastructure
+### Start Database and Storage
 
 ```bash
 # Start PostgreSQL and MinIO
@@ -66,19 +66,16 @@ pnpm db:generate
 
 # Run database migrations
 pnpm db:migrate
-
-# Or push schema without migrations (development)
-pnpm db:push
 ```
 
 ---
 
-## 🛠️ Development Commands
+## 🛠️ Development 
 
 ### Run Development Servers
 
 ```bash
-# Run all packages (API + Client)
+# Run all API + Client
 pnpm dev
 
 # Run only API (localhost:3000)
@@ -109,126 +106,37 @@ pnpm --filter api start
 node api/dist/index.js
 ```
 
-### Type Checking & Linting
-
-```bash
-# Type-check all packages
-pnpm type-check
-
-# Lint all packages
-pnpm lint
-
-# Run tests
-pnpm test
-```
 
 ---
 
-## 🗄️ Database Commands
-
-All database commands run in the `api` package context:
-
-```bash
-# Generate Prisma client after schema changes
-pnpm db:generate
-
-# Create and apply migrations (interactive)
-pnpm db:migrate
-
-# Create migration with specific name
-pnpm db:migrate -- --name <migration-name>
-
-# Push schema to database (no migration file)
-pnpm db:push
-
-# Open Prisma Studio (database GUI)
-pnpm db:studio
-```
-
----
 
 ## 📦 Package Management
 
 ### Install Dependencies
 
 ```bash
-# Add dependency to root
-pnpm add <package> -w
-
 # Add dependency to specific package
 pnpm add <package> --filter api
 pnpm add <package> --filter client
 pnpm add <package> --filter @quicksurvey/shared
-
-# Add dev dependency
-pnpm add -D <package> --filter api
 ```
 
 ### Run Commands in Specific Package
 
 ```bash
-# Run any script in a specific package
+# Run script in a specific package
 pnpm --filter api <script>
 pnpm --filter client <script>
-
-# Examples
-pnpm --filter api dev
-pnpm --filter client build
-```
-
----
-
-## 🐳 Docker Commands
-
-```bash
-# Start all services (PostgreSQL, MinIO)
-docker-compose up -d
-
-# Stop all services
-docker-compose down
-
-# View logs
-docker-compose logs -f
-
-# Reset database (destroys data)
-docker-compose down -v
-docker-compose up -d
-```
-
----
-
-## 🏗️ Turborepo
-
-This project uses [Turborepo](https://turborepo.com/) for build orchestration:
-
-```bash
-# Run turbo commands directly
-turbo build
-turbo dev
-turbo type-check
-
-# Run with filters
-turbo build --filter=api
-turbo dev --filter=client
-
-# View dependency graph
-turbo build --graph
 ```
 
 ---
 
 ## 📝 Tech Stack
 
-| Package | Technology |
-|---------|------------|
-| **api** | Hono, Prisma, PostgreSQL |
-| **client** | React 19, Vite, TypeScript |
-| **shared** | TypeScript types & utilities |
-| **infra** | Docker, PostgreSQL, MinIO |
-| **tooling** | Turborepo, pnpm, ESLint |
+| Package | Technology                             |
+|---------|----------------------------------------|
+| **api** | Hono, Prisma, PostgreSQL, GraphQL Yoga |
+| **client** | React 19, Vite, TypeScript             |
+| **infra** | Docker, PostgreSQL, MinIO              |
 
----
 
-## 📄 License
-
-MIT
