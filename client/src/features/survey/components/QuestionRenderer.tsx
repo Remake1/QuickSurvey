@@ -11,6 +11,7 @@ import { LinearScaleQuestionField } from "./questions/LinearScaleQuestion.tsx";
 
 type Props = {
     question: Question;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control: Control<any>; // Using any here because the form shape is dynamic
 };
 
@@ -31,6 +32,7 @@ export function QuestionRenderer({ question, control }: Props) {
         case "linear_scale":
             return <LinearScaleQuestionField question={question} control={control} />;
         default:
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return <p className="text-destructive">Unknown question type: {(question as any).type}</p>;
     }
 }

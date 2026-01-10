@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type SurveyData = Record<string, any>;
+type SurveyData = Record<string, unknown>;
 
 interface SurveyResponseState {
     responses: Record<string, SurveyData>;
