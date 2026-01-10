@@ -46,8 +46,8 @@ const createSurveySchema = (questions: Question[]) => {
 type Props = {
     surveyId: string;
     questions: Question[];
-    onSubmit: (data: Record<string, any>) => void;
-    defaultValues?: Record<string, any>;
+    onSubmit: (data: Record<string, unknown>) => void;
+    defaultValues?: Record<string, unknown>;
     isSubmitting?: boolean;
 };
 
