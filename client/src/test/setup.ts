@@ -12,6 +12,7 @@ if (!globalThis.location) {
 const realFetch = globalThis.fetch;
 if (typeof realFetch === 'function') {
     globalThis.fetch = (input: RequestInfo | URL, init?: RequestInit) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const base = (globalThis.location as any)?.origin ?? 'http://localhost';
 
         if (typeof input === 'string' && input.startsWith('/')) {
@@ -26,6 +27,7 @@ if (typeof realFetch === 'function') {
             return realFetch(new Request(new URL(input.url, base), input), init);
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return realFetch(input as any, init);
     };
 }

@@ -25,7 +25,7 @@ export default function SurveyPublicPage() {
     const defaultValues = id ? getResponse(id) : undefined;
 
 
-    const handleSubmit = (data: Record<string, any>) => {
+    const handleSubmit = (data: Record<string, unknown>) => {
         if (!survey || !id) return;
 
         // Transform form data to SubmitResponseDto
@@ -44,7 +44,7 @@ export default function SurveyPublicPage() {
                 questionId: q.id,
                 type: q.type,
                 value: value,
-            } as any;
+            } as SubmitResponseDto["answers"][number];
 
             answers.push(answer);
         });
