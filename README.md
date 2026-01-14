@@ -10,7 +10,7 @@
 
 A monorepo built with **Hono**, **Vite**, **React**, and **Turborepo**.
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 QuickSurvey/
@@ -107,36 +107,5 @@ node api/dist/index.js
 ```
 
 
----
-
-
-## 📦 Package Management
-
-### Install Dependencies
-
-```bash
-# Add dependency to specific package
-pnpm add <package> --filter api
-pnpm add <package> --filter client
-pnpm add <package> --filter @quicksurvey/shared
-```
-
-### Run Commands in Specific Package
-
-```bash
-# Run script in a specific package
-pnpm --filter api <script>
-pnpm --filter client <script>
-```
-
----
-
-## 📝 Tech Stack
-
-| Package | Technology                             |
-|---------|----------------------------------------|
-| **api** | Hono, Prisma, PostgreSQL, GraphQL Yoga |
-| **client** | React 19, Vite, TypeScript             |
-| **infra** | Docker, PostgreSQL, MinIO              |
 
 
