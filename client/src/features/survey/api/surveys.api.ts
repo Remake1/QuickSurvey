@@ -2,7 +2,7 @@ import { MY_SURVEYS_QUERY } from './mySurveys.gql.ts';
 import { PUBLISH_SURVEY_MUTATION, UNPUBLISH_SURVEY_MUTATION } from './surveyStatus.gql.ts';
 import { CREATE_SURVEY_MUTATION } from './createSurvey.gql.ts';
 import { SURVEY_RESPONSES_QUERY } from './surveyResponses.gql.ts';
-import { type SurveyListItem, type SurveyStatus, type CreateSurveyDto } from '@quicksurvey/shared/schemas/survey.schema.ts';
+import { type SurveyListItem, type SurveyStatus, type CreateSurveyDto } from '@/shared/schemas/survey.schema.ts';
 
 interface RawSurvey {
     id: string;

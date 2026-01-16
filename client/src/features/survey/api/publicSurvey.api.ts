@@ -1,6 +1,6 @@
 import { GET_PUBLIC_SURVEY_QUERY, SUBMIT_RESPONSE_MUTATION } from './publicSurvey.gql.ts';
-import { type Question } from '@quicksurvey/shared/schemas/question.schema.ts';
-import { type SubmitResponseDto } from '@quicksurvey/shared/schemas/response.schema.ts';
+import { type Question } from '@/shared/schemas/question.schema.ts';
+import { type SubmitResponseDto } from '@/shared/schemas/response.schema.ts';
 
 interface PublicSurveyResponse {
     data: {

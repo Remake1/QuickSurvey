@@ -8,7 +8,7 @@ import {
     Legend,
 } from "chart.js";
 import type { SurveyResponse } from "@/features/survey/api/surveys.api";
-import type { LinearScaleQuestion } from "@quicksurvey/shared/schemas/question.schema";
+import type { LinearScaleQuestion } from "@/shared/schemas/question.schema";
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);

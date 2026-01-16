@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { fetchPublicSurvey, submitSurveyResponse } from "../api/publicSurvey.api.ts";
-import type { SubmitResponseDto } from "@quicksurvey/shared/schemas/response.schema.ts";
+import type { SubmitResponseDto } from "@/shared/schemas/response.schema.ts";
 
 export function usePublicSurvey(id: string | undefined) {
     const surveyQuery = useQuery({

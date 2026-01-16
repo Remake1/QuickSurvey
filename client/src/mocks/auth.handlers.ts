@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw';
-import type { LoginDto, RegisterDto, UserResponse } from '@quicksurvey/shared/schemas/auth.schema.ts';
+import type { LoginDto, RegisterDto, UserResponse } from '@/shared/schemas/auth.schema.ts';
 
 export type DbUser = {
     id: string;

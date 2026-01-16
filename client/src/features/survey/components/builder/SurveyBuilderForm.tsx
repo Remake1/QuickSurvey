@@ -1,14 +1,14 @@
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { CreateSurveySchema, type CreateSurveyDto } from '@quicksurvey/shared/schemas/survey.schema.ts';
+import { CreateSurveySchema, type CreateSurveyDto } from '@/shared/schemas/survey.schema.ts';
 import { Button } from '@/shared/components/ui/button.tsx';
 import { Input } from '@/shared/components/ui/input.tsx';
 import { Textarea } from '@/shared/components/ui/textarea.tsx';
 import { Field, FieldError, FieldLabel } from '@/shared/components/ui/field.tsx';
 import { QuestionsList } from './QuestionsList.tsx';
 import { Separator } from '@/shared/components/ui/separator.tsx';
-import type { Question } from '@quicksurvey/shared/schemas/question.schema.ts';
+import type { Question } from '@/shared/schemas/question.schema.ts';
 
 // Form values type (input type, with optional fields from defaults)
 type FormValues = z.input<typeof CreateSurveySchema>;

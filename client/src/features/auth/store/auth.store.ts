@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type {UserResponse} from "@quicksurvey/shared/schemas/auth.schema.ts";
+import type {UserResponse} from "@/shared/schemas/auth.schema.ts";
 
 type AuthState = {
     user: UserResponse | null;

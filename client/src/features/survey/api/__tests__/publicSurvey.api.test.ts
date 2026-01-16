@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { fetchPublicSurvey, submitSurveyResponse } from '../publicSurvey.api.ts';
-import type { SubmitResponseDto } from '@quicksurvey/shared/schemas/response.schema.ts';
+import type { SubmitResponseDto } from '@/shared/schemas/response.schema.ts';
 
 function installGraphqlBodyCapture() {
     const originalFetch = globalThis.fetch;

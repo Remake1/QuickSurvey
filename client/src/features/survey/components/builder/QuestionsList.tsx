@@ -1,7 +1,7 @@
 import { Button } from '@/shared/components/ui/button.tsx';
 import { Plus } from 'lucide-react';
 import { QuestionEditor } from './QuestionEditor.tsx';
-import type { Question } from '@quicksurvey/shared/schemas/question.schema.ts';
+import type { Question } from '@/shared/schemas/question.schema.ts';
 
 type Props = {
     questions: Question[];

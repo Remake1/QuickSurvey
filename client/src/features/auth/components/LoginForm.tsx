@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/shared/components/ui/card.tsx";
-import { type LoginDto, LoginSchema } from "@quicksurvey/shared/schemas/auth.schema.ts";
+import { type LoginDto, LoginSchema } from "@/shared/schemas/auth.schema.ts";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/components/ui/field.tsx";

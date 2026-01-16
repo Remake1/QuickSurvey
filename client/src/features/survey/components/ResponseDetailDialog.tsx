@@ -1,5 +1,5 @@
 import type { SurveyResponse, Answer } from "@/features/survey/api/surveys.api";
-import type { Question, MultipleChoiceQuestion, CheckboxesQuestion, DropdownQuestion } from "@quicksurvey/shared/schemas/question.schema";
+import type { Question, MultipleChoiceQuestion, CheckboxesQuestion, DropdownQuestion } from "@/shared/schemas/question.schema";
 import {
     Dialog,
     DialogContent,

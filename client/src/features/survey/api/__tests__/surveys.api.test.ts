@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createSurvey, fetchMySurveys, fetchSurveyResponses, publishSurvey, unpublishSurvey } from '../surveys.api.ts';
-import type { CreateSurveyDto } from '@quicksurvey/shared/schemas/survey.schema.ts';
+import type { CreateSurveyDto } from '@/shared/schemas/survey.schema.ts';
 
 // MSW server is configured globally via src/test/setup.ts
 

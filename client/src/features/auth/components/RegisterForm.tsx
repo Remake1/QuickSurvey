@@ -1,4 +1,4 @@
-import { type RegisterDto, RegisterSchema } from "@quicksurvey/shared/schemas/auth.schema.ts";
+import { type RegisterDto, RegisterSchema } from "@/shared/schemas/auth.schema.ts";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/shared/components/ui/card.tsx";

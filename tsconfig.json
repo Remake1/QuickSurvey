@@ -16,7 +16,7 @@
     "baseUrl": "./",
     "paths": {
       "@api/*": [
-        "./api/src/*"
+        "./api-hono/src/*"
       ],
       "@client/*": [
         "./client/src/*"
@@ -46,7 +46,7 @@
   },
   "exclude": [
     "node_modules",
-    "api",
+    "api-hono",
     "client",
     "shared",
     "dist",

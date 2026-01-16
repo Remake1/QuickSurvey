@@ -3,7 +3,7 @@ import { cn } from "@/shared/lib/utils";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { LogoutButton } from "@/features/auth/components/LogoutButton";
 import { Calendar, Mail, User as UserIcon } from "lucide-react";
-import type { UserResponse } from "@quicksurvey/shared/schemas/auth.schema";
+import type { UserResponse } from "@/shared/schemas/auth.schema";
 
 interface AccountCardProps {
     className?: string;

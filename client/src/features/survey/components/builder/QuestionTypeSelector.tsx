@@ -5,7 +5,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/shared/components/ui/select.tsx';
-import type { QuestionType } from '@quicksurvey/shared/schemas/question.schema.ts';
+import type { QuestionType } from '@/shared/schemas/question.schema.ts';
 
 const QUESTION_TYPE_LABELS: Record<QuestionType, string> = {
     short_answer: 'Short Answer',

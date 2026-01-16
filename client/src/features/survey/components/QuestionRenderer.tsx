@@ -1,5 +1,5 @@
 import type { Control } from "react-hook-form";
-import type { Question } from "@quicksurvey/shared/schemas/question.schema.ts";
+import type { Question } from "@/shared/schemas/question.schema.ts";
 
 import { ShortAnswerQuestionField } from "./questions/ShortAnswerQuestion.tsx";
 import { ParagraphQuestionField } from "./questions/ParagraphQuestion.tsx";

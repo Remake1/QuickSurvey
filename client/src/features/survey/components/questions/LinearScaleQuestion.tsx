@@ -1,4 +1,4 @@
-import type { LinearScaleQuestion } from "@quicksurvey/shared/schemas/question.schema.ts";
+import type { LinearScaleQuestion } from "@/shared/schemas/question.schema.ts";
 import type { Control } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { Field, FieldError, FieldLabel } from "@/shared/components/ui/field.tsx";

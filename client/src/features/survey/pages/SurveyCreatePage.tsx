@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 import { useCreateSurvey } from '@/features/survey/hooks/useCreateSurvey.ts';
 import { SurveyBuilderForm } from '@/features/survey/components/builder/SurveyBuilderForm.tsx';
-import type { CreateSurveyDto } from '@quicksurvey/shared/schemas/survey.schema.ts';
+import type { CreateSurveyDto } from '@/shared/schemas/survey.schema.ts';
 
 export default function SurveyCreatePage() {
     const navigate = useNavigate();

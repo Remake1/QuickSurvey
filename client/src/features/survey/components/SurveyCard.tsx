@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { type SurveyListItem } from '@quicksurvey/shared/schemas/survey.schema.ts';
+import { type SurveyListItem } from '@/shared/schemas/survey.schema.ts';
 import { Link } from 'react-router';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/shared/components/ui/card';
 import { Badge } from '@/shared/components/ui/badge';

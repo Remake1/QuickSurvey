@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { QuestionRenderer } from "./QuestionRenderer.tsx";
-import type { Question } from "@quicksurvey/shared/schemas/question.schema.ts";
+import type { Question } from "@/shared/schemas/question.schema.ts";
 import { useEffect } from "react";
 import { useSurveyResponseStore } from "../store/surveyResponse.store.ts";
 

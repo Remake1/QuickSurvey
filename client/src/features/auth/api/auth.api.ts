@@ -1,4 +1,4 @@
-import {ErrorResponseSchema, type LoginDto, type RegisterDto} from "@quicksurvey/shared/schemas/auth.schema.ts";
+import {ErrorResponseSchema, type LoginDto, type RegisterDto} from "@/shared/schemas/auth.schema.ts";
 
 export class AuthError extends Error {
     constructor(message: string) {

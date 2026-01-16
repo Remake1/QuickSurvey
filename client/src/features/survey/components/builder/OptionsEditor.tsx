@@ -1,7 +1,7 @@
 import { Button } from '@/shared/components/ui/button.tsx';
 import { Input } from '@/shared/components/ui/input.tsx';
 import { Trash2, Plus } from 'lucide-react';
-import type { Option } from '@quicksurvey/shared/schemas/question.schema.ts';
+import type { Option } from '@/shared/schemas/question.schema.ts';
 
 type Props = {
     options: Option[];

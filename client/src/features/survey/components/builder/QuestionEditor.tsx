@@ -6,7 +6,7 @@ import { Label } from '@/shared/components/ui/label.tsx';
 import { Trash2 } from 'lucide-react';
 import { QuestionTypeSelector } from './QuestionTypeSelector.tsx';
 import { OptionsEditor } from './OptionsEditor.tsx';
-import type { Question, QuestionType, Option } from '@quicksurvey/shared/schemas/question.schema.ts';
+import type { Question, QuestionType, Option } from '@/shared/schemas/question.schema.ts';
 
 type Props = {
     question: Question;

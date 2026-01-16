@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router";
 import { FormViewer } from "../components/FormViewer.tsx";
 import { useSurveyResponseStore } from "../store/surveyResponse.store.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
-import type { SubmitResponseDto } from "@quicksurvey/shared/schemas/response.schema.ts";
+import type { SubmitResponseDto } from "@/shared/schemas/response.schema.ts";
 import { usePublicSurvey } from "../hooks/usePublicSurvey.ts";
 
 export default function SurveyPublicPage() {

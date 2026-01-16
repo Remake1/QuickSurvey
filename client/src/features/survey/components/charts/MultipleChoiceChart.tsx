@@ -6,7 +6,7 @@ import {
     Legend,
 } from "chart.js";
 import type { SurveyResponse } from "@/features/survey/api/surveys.api";
-import type { MultipleChoiceQuestion, CheckboxesQuestion, DropdownQuestion } from "@quicksurvey/shared/schemas/question.schema";
+import type { MultipleChoiceQuestion, CheckboxesQuestion, DropdownQuestion } from "@/shared/schemas/question.schema";
 import {
     Table,
     TableBody,

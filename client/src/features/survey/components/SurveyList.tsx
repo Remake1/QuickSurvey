@@ -1,5 +1,5 @@
 import {SurveyCard} from "@/features/survey/components/SurveyCard.tsx";
-import { type SurveyListItem } from '@quicksurvey/shared/schemas/survey.schema.ts';
+import { type SurveyListItem } from '@/shared/schemas/survey.schema.ts';
 
 type Props = {
     surveys: SurveyListItem[];

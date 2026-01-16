@@ -8,104 +8,65 @@
 ![Screenshot 1](docs/images/img_4.png)
 ![Screenshot 1](docs/images/img_5.png)
 
-A monorepo built with **Hono**, **Vite**, **React**, and **Turborepo**.
+QuickSurvey is being prepared for a Go backend rewrite. The active frontend is a React/Vite app in `client`.
 
 ## Project Structure
 
-```
+```text
 QuickSurvey/
-├── api/          # Hono backend API
-├── client/       # React frontend
-├── shared/       # Shared types
+├── api-hono/     # Legacy Hono backend kept as a migration reference
+├── client/       # React frontend and frontend-owned schemas
+├── shared/       # Historical shared package kept for migration reference
 ├── docker-compose.yaml
-├── turbo.json
-└── package.json
+└── README.md
 ```
 
 ## Getting Started
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v20+)
-- [pnpm](https://pnpm.io/) 
-- [Docker](https://www.docker.com/) (for database)
+- [Node.js](https://nodejs.org/) v20+
+- [pnpm](https://pnpm.io/) for the frontend only
+- [Docker](https://www.docker.com/) for local infrastructure
 
-### Installation
+### Frontend Installation
 
 ```bash
-# Clone repository
-git clone https://github.com/Remake1/QuickSurvey.git
-cd QuickSurvey
-
-# Install dependencies
+cd client
 pnpm install
 ```
 
 ### Environment Setup
 
 ```bash
-# Copy environment files
 cp .env.example .env
-cp api/.env.example api/.env
-
-# Edit api/.env with postgres credentials
+cp api-hono/.env.example api-hono/.env
 ```
 
 ### Start Database and Storage
 
 ```bash
-# Start PostgreSQL and MinIO
 docker-compose up -d
 ```
 
-### Database Setup
+## Development
+
+### Frontend
 
 ```bash
-# Generate Prisma client
-pnpm db:generate
-
-# Run database migrations
-pnpm db:migrate
-```
-
----
-
-## 🛠️ Development 
-
-### Run Development Servers
-
-```bash
-# Run all API + Client
+cd client
 pnpm dev
-
-# Run only API (localhost:3000)
-pnpm dev:api
-
-# Run only Client (localhost:5173)
-pnpm dev:client
 ```
 
-### Build
+The frontend runs on `http://localhost:5173` and proxies API requests to `http://localhost:3000`.
+
+### Legacy Hono Backend Reference
+
+The old TypeScript backend lives in `api-hono`. It is kept for migration reference while the Go backend is built.
+
+### Build Frontend
 
 ```bash
-# Build all packages
+cd client
 pnpm build
-
-# Build specific package
-pnpm build:api      # Uses esbuild → api/dist/index.js
-pnpm build:client   # Uses Vite → client/dist/
 ```
-
-### Run Production
-
-```bash
-# Start API (after building)
-pnpm --filter api start
-
-# Or directly with node
-node api/dist/index.js
-```
-
-
-
-
