@@ -14,6 +14,7 @@ QuickSurvey is being prepared for a Go backend rewrite. The active frontend is a
 
 ```text
 QuickSurvey/
+├── api/          # Go backend
 ├── api-hono/     # Legacy Hono backend kept as a migration reference
 ├── client/       # React frontend and frontend-owned schemas
 ├── shared/       # Historical shared package kept for migration reference
@@ -34,6 +35,14 @@ QuickSurvey/
 ```bash
 cd client
 pnpm install
+```
+
+### API Installation
+
+```bash
+cd api
+go mod download
+cp .env.example .env
 ```
 
 ### Environment Setup
@@ -59,6 +68,15 @@ pnpm dev
 ```
 
 The frontend runs on `http://localhost:5173` and proxies API requests to `http://localhost:3000`.
+
+### Go API
+
+```bash
+cd api
+go run ./cmd/server
+```
+
+The API runs on `http://localhost:3000`.
 
 ### Legacy Hono Backend Reference
 

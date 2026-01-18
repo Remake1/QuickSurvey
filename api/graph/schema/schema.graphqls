@@ -1,0 +1,149 @@
+scalar DateTime
+
+enum QuestionType {
+  short_answer
+  paragraph
+  multiple_choice
+  checkboxes
+  dropdown
+  date
+  linear_scale
+}
+
+enum SurveyStatus {
+  DRAFT
+  PUBLISHED
+}
+
+type User {
+  id: ID!
+  email: String!
+  name: String
+  createdAt: DateTime!
+}
+
+type Option {
+  id: ID!
+  text: String!
+}
+
+interface Question {
+  id: ID!
+  title: String!
+  required: Boolean!
+  type: QuestionType!
+}
+
+type TextQuestion implements Question {
+  id: ID!
+  title: String!
+  required: Boolean!
+  type: QuestionType!
+}
+
+type OptionsQuestion implements Question {
+  id: ID!
+  title: String!
+  required: Boolean!
+  type: QuestionType!
+  options: [Option!]!
+}
+
+type DateQuestion implements Question {
+  id: ID!
+  title: String!
+  required: Boolean!
+  type: QuestionType!
+}
+
+type ScaleQuestion implements Question {
+  id: ID!
+  title: String!
+  required: Boolean!
+  type: QuestionType!
+  min: Int!
+  max: Int!
+  minLabel: String
+  maxLabel: String
+}
+
+type Answer {
+  questionId: ID!
+  type: QuestionType!
+  textValue: String
+  choiceValue: String
+  checkboxValues: [String!]
+  dateValue: String
+  scaleValue: Int
+}
+
+type Survey {
+  id: ID!
+  title: String!
+  description: String
+  questions: [Question!]!
+  status: SurveyStatus!
+  owner: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type SurveyResponse {
+  id: ID!
+  surveyId: ID!
+  answers: [Answer!]!
+  createdAt: DateTime!
+}
+
+input OptionInput {
+  id: ID
+  text: String!
+}
+
+input QuestionInput {
+  id: ID
+  title: String!
+  required: Boolean
+  type: QuestionType!
+  options: [OptionInput!]
+  min: Int
+  max: Int
+  minLabel: String
+  maxLabel: String
+}
+
+input AnswerInput {
+  questionId: ID!
+  type: QuestionType!
+  textValue: String
+  choiceValue: String
+  checkboxValues: [String!]
+  dateValue: String
+  scaleValue: Int
+}
+
+input CreateSurveyInput {
+  title: String!
+  description: String
+  questions: [QuestionInput!]!
+}
+
+input SubmitResponseInput {
+  surveyId: ID!
+  answers: [AnswerInput!]!
+}
+
+type Query {
+  me: User
+  survey(id: ID!): Survey
+  mySurveys: [Survey!]!
+  surveyResponses(surveyId: ID!): [SurveyResponse!]!
+}
+
+type Mutation {
+  createSurvey(input: CreateSurveyInput!): Survey!
+  publishSurvey(id: ID!): Survey!
+  unpublishSurvey(id: ID!): Survey!
+  submitResponse(input: SubmitResponseInput!): SurveyResponse!
+}
+
