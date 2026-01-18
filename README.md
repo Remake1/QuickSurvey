@@ -8,16 +8,15 @@
 ![Screenshot 1](docs/images/img_4.png)
 ![Screenshot 1](docs/images/img_5.png)
 
-QuickSurvey is being prepared for a Go backend rewrite. The active frontend is a React/Vite app in `client`.
+QuickSurvey is a survey builder with a Go API and React/Vite frontend.
 
 ## Project Structure
 
 ```text
 QuickSurvey/
 ├── api/          # Go backend
-├── api-hono/     # Legacy Hono backend kept as a migration reference
 ├── client/       # React frontend and frontend-owned schemas
-├── shared/       # Historical shared package kept for migration reference
+├── shared/       # Shared package
 ├── docker-compose.yaml
 └── README.md
 ```
@@ -49,7 +48,6 @@ cp .env.example .env
 
 ```bash
 cp .env.example .env
-cp api-hono/.env.example api-hono/.env
 ```
 
 ### Start Database and Storage
@@ -77,10 +75,6 @@ go run ./cmd/server
 ```
 
 The API runs on `http://localhost:3000`.
-
-### Legacy Hono Backend Reference
-
-The old TypeScript backend lives in `api-hono`. It is kept for migration reference while the Go backend is built.
 
 ### Build Frontend
 
